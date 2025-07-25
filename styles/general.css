@@ -1,3 +1,13 @@
+body{
+  background-color: #9ea2af;
+}
 body, button{
   font-family: Comfortaa, Arial;
+  
+}
+button{
+  background-color: #f0f0f0;
+}
+button:hover{
+  cursor: pointer;
 }
