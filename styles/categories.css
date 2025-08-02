@@ -97,6 +97,7 @@
 }
 .category-add-button{
   width: 40px;
+  min-height: 40px;
 }
 .task-add-button, .category-add-button{
   border-style: none;
@@ -106,8 +107,8 @@
   transition-duration: 0.15s;
 }
 .task-add-button:hover, .category-add-button:hover{
-  background-color: #bdbdbd;
+  background-color: #b4dcdc;
 }
 .task-add-button:active, .category-add-button:active{
-  background-color: #a3a3a3;
+  background-color: #82aaaa;
 }

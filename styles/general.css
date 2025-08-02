@@ -11,3 +11,7 @@ button{
 button:hover{
   cursor: pointer;
 }
+input:focus{
+  outline: none;
+  background-color: rgb(240, 240, 255);
+}
