@@ -1,4 +1,4 @@
-.name-input-popup{
+.title-input-popup{
   position: fixed;
   z-index: 10;
   background-color: rgba(0, 0, 0, 0.4);
@@ -10,8 +10,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  visibility: hidden;
 }
-.name-input{
+.title-input{
   width: 350px;
   margin-top: 100px;
   margin-bottom: 10px;
@@ -22,13 +23,14 @@
   box-shadow: 0px 0px 10px;
 }
 
-.name-input-buttons-container{
+.title-input-buttons-container{
   width: 350px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-.name-input-button-confirm, .name-input-button-deny{
+.title-input-button-confirm, .title-input-button-deny{
   width: 50px;
   height: 35px;
   border-style: none;
@@ -38,17 +40,24 @@
   transition-property: background-color, color;
   transition-duration: 0.15s;
 }
-.name-input-button-confirm:hover{
+.title-input-button-confirm:hover{
   background-color: rgb(17, 236, 17);
 }
-.name-input-button-confirm:active{
+.title-input-button-confirm:active{
   background-color: rgb(13, 158, 13);
   color: white;
 }
-.name-input-button-deny:hover{
+.title-input-button-deny:hover{
   background-color: rgb(255, 14, 14);
 }
-.name-input-button-deny:active{
+.title-input-button-deny:active{
   background-color: rgb(179, 11, 11);
   color: white;
+}
+
+.title-too-long-error{
+  color: rgb(255, 14, 14);
+  font-weight: 700;
+  font-size: 18px;
+  visibility: hidden;
 }

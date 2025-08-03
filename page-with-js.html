@@ -8,8 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="/styles/general.css" rel="stylesheet">
     <link href="/styles/categories.css" rel="stylesheet">
+    <link href="/styles/popup.css" rel="stylesheet">
+    <link href="/styles/header.css" rel="stylesheet">
   </head>
   <body>
+    <div class="header">
+      <button class="category-add-button js-category-add-button">Add category</button>
+    </div>
     <div class="categories-container js-categories-container">
       <div class="category-container">
         <div class="categorie-title">
@@ -35,7 +40,15 @@
         </div>
         <button class="task-add-button">+</button>
       </div>
-      <button class="category-add-button js-category-add-button">+</button>
+    </div>
+    <div class="title-input-popup js-title-input-popup">
+      <input placeholder="Input title" class="title-input js-title-input">
+      
+      <div class="title-input-buttons-container">
+        <button class="title-input-button-confirm js-title-input-button-confirm">Y</button>
+        <span class="title-too-long-error js-title-too-long-error">Title too long</span>
+        <button class="title-input-button-deny js-title-input-button-deny">N</button>
+      </div>
     </div>
     <script src="/scripts/category.js"></script>
   </body>
