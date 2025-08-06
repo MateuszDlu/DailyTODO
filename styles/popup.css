@@ -55,9 +55,8 @@
   color: white;
 }
 
-.title-too-long-error{
+.title-error{
   color: rgb(255, 14, 14);
   font-weight: 700;
   font-size: 18px;
-  visibility: hidden;
 }
