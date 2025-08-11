@@ -79,6 +79,9 @@ function addEventListenersToCategoryModifyButtons(){
         return;
       }
 
+      modifyButton.innerHTML = `&#x2713;`
+      modifyButton.classList.add('modify-category-active')
+
       const originalTitle = categoriesList[index];
       document.querySelector(`.js-title-text-${index}`).innerHTML = `<input  class="title-modify-input js-title-modify-input-${index}">`
 
