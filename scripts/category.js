@@ -1,20 +1,33 @@
-const categoriesList = [];
+const categoriesList = [{categoryName: 'category name', tasks: ['task1', 'task2', 'task3']}];
 
 
 function renderCategoriesList(){
   let categoriesListHTML = '';
 
   categoriesList.forEach((categorieObj, index) => {
+    let categoryTasksHTML = ``;
+    categorieObj.tasks.forEach((task) => {
+      const taskHTML = `
+        <div class="task-container">
+          <span class="task-text js-task-text">${task}</span>
+          <div class="buttons-container">
+            <button class="task-cross-button js-task-cross-button">-</button>
+            <button class="task-modify-button js-task-modify-button">M</button>
+          </div>
+        </div>`
+      categoryTasksHTML += taskHTML;
+    })
     const {categoryName} = categorieObj;
     const html = `<div class="category-container">
       <div class="categorie-title">
         <span class="title-text js-title-text-${index}">${categoryName}</span>
         <div class="buttons-container">
-          <button class="category-delete-button js-category-delete-button">X</button>
+          <button class="category-delete-button js-category-delete-button">&#10006;</button>
           <button class="category-modify-button js-category-modify-button">M</button>
         </div>
       </div>
-      <button class="task-add-button">+</button>
+      ${categoryTasksHTML}
+      <button class="task-add-button js-task-add-button">+</button>
     </div>`
     categoriesListHTML += html;
   });
