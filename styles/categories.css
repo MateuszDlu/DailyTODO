@@ -126,7 +126,7 @@
   box-shadow: none;
 }
 
-.modify-category-active{
+.modify-active{
   background-color: rgb(0, 155, 0);
   color: white;
   animation-name: flash-green, flash-green-text;

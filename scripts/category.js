@@ -1,4 +1,4 @@
-const categoriesList = [{categoryName: 'category name', tasks: ['task1', 'task2', 'task3']}];
+const categoriesList = [{categoryName: 'category1', tasks: ['task1', 'task2', 'task3']}, {categoryName: 'category2', tasks: ['task4', 'task5']}];
 
 
 function renderCategoriesList(){
@@ -6,13 +6,13 @@ function renderCategoriesList(){
 
   categoriesList.forEach((categorieObj, index) => {
     let categoryTasksHTML = ``;
-    categorieObj.tasks.forEach((task) => {
+    categorieObj.tasks.forEach((task, taskIndex) => {
       const taskHTML = `
         <div class="task-container">
-          <span class="task-text js-task-text">${task}</span>
+          <span class="task-text js-task-text js-task-text-${index}-${taskIndex}">${task}</span>
           <div class="buttons-container">
-            <button class="task-cross-button js-task-cross-button">-</button>
-            <button class="task-modify-button js-task-modify-button">M</button>
+            <button class="task-cross-button js-task-cross-button js-task-cross-button-${index}-${taskIndex}" data-category-index=${index} data-task-index=${taskIndex}>-</button>
+            <button class="task-modify-button js-task-modify-button js-task-modify-button-${index}-${taskIndex}" data-category-index=${index} data-task-index=${taskIndex}>M</button>
           </div>
         </div>`
       categoryTasksHTML += taskHTML;
@@ -34,6 +34,8 @@ function renderCategoriesList(){
   document.querySelector('.js-categories-container').innerHTML = categoriesListHTML;
   addEventListenersToCategoryDeleteButtons();
   addEventListenersToCategoryModifyButtons();
+  addEventListenersToTaskAddButtons();
+  addEventListenersToTaskModifyButtons();
 }
 
 renderCategoriesList()
@@ -67,11 +69,15 @@ function addCategory(){
   }else if(categoryName.length > 25){
     document.querySelector('.js-title-error').innerHTML = 'Title too long (>25)'
   }else{
-    categoriesList.push({categoryName})
+    categoriesList.push({categoryName, tasks:[]})
     document.querySelector('.js-title-input-popup').style.visibility = 'hidden';
     document.querySelector('.js-title-error').innerHTML = '';
     renderCategoriesList()
   }
+}
+
+function addTaskToCategory(categoryIndex){
+  
 }
 
 function addEventListenersToCategoryDeleteButtons(){
@@ -81,6 +87,54 @@ function addEventListenersToCategoryDeleteButtons(){
       renderCategoriesList();
     });
   });
+}
+
+function addEventListenersToTaskAddButtons(){
+  document.querySelectorAll('.js-task-add-button').forEach((addTaskButton, index) => {
+    addTaskButton.addEventListener('click', () => {
+      addTaskToCategory(index);
+      renderCategoriesList();
+    });
+  });
+}
+
+function addEventListenersToTaskModifyButtons() {
+  document.querySelectorAll('.js-task-modify-button').forEach((modifyButton) => {
+    modifyButton.addEventListener('click', () => {
+      const categoryIndex = parseInt(modifyButton.dataset.categoryIndex, 10);
+      const taskIndex = parseInt(modifyButton.dataset.taskIndex, 10);
+
+      const existingInput = document.querySelector(`.js-task-modify-input-${categoryIndex}-${taskIndex}`);
+      if (existingInput) {
+        confirmTaskEdit(categoryIndex, taskIndex);
+        return;
+      }
+
+      modifyButton.innerHTML = `&#x2713;`
+      modifyButton.classList.add('modify-active')
+
+      const originalTitle = categoriesList[categoryIndex].tasks[taskIndex];
+      document.querySelector(`.js-task-text-${categoryIndex}-${taskIndex}`).innerHTML = `<input  class="task-modify-input js-task-modify-input-${categoryIndex}-${taskIndex}">`
+
+      const input = document.querySelector(`.js-task-modify-input-${categoryIndex}-${taskIndex}`)
+      input.value = originalTitle;
+      input.focus();
+      
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          confirmTaskEdit(categoryIndex, taskIndex);
+        }
+      });
+    });
+  });
+}
+
+function confirmTaskEdit(categoryIndex, taskIndex) {
+  const input = document.querySelector(`.js-task-modify-input-${categoryIndex}-${taskIndex}`);
+  const taskName = input.value.trim();
+
+  categoriesList[categoryIndex].tasks.splice(taskIndex, 1, taskName);
+  renderCategoriesList();
 }
 
 function addEventListenersToCategoryModifyButtons(){
@@ -93,7 +147,7 @@ function addEventListenersToCategoryModifyButtons(){
       }
 
       modifyButton.innerHTML = `&#x2713;`
-      modifyButton.classList.add('modify-category-active')
+      modifyButton.classList.add('modify-active')
 
       const originalTitle = categoriesList[index];
       document.querySelector(`.js-title-text-${index}`).innerHTML = `<input  class="title-modify-input js-title-modify-input-${index}">`
@@ -113,6 +167,7 @@ function addEventListenersToCategoryModifyButtons(){
 
 function confirmCategoryEdit(index) {
   const input = document.querySelector(`.js-title-modify-input-${index}`);
+  const oldCategory = categoriesList[index]
   const categoryName = input.value.trim();
 
   if (categoryName.length <= 0) {
@@ -123,6 +178,6 @@ function confirmCategoryEdit(index) {
     return;
   }
 
-  categoriesList.splice(index, 1, {categoryName});
+  categoriesList.splice(index, 1, {categoryName, tasks: oldCategory.tasks});
   renderCategoriesList();
 }
