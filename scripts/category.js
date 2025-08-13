@@ -36,6 +36,7 @@ function renderCategoriesList(){
   addEventListenersToCategoryModifyButtons();
   addEventListenersToTaskAddButtons();
   addEventListenersToTaskModifyButtons();
+  addEventListenersToTaskDeleteButtons()
 }
 
 renderCategoriesList()
@@ -77,7 +78,13 @@ function addCategory(){
 }
 
 function addTaskToCategory(categoryIndex){
+  categoriesList[categoryIndex].tasks.push('');
+  const newTaskIndex = categoriesList[categoryIndex].tasks.length - 1;
+  renderCategoriesList();
   
+  const modifyButton = document.querySelector(`.js-task-modify-button-${categoryIndex}-${newTaskIndex}`);
+  
+  modifyTask(categoryIndex, newTaskIndex, modifyButton);
 }
 
 function addEventListenersToCategoryDeleteButtons(){
@@ -93,8 +100,25 @@ function addEventListenersToTaskAddButtons(){
   document.querySelectorAll('.js-task-add-button').forEach((addTaskButton, index) => {
     addTaskButton.addEventListener('click', () => {
       addTaskToCategory(index);
-      renderCategoriesList();
     });
+  });
+}
+
+function modifyTask(categoryIndex, taskIndex, modifyButton){
+  modifyButton.innerHTML = `&#x2713;`
+  modifyButton.classList.add('modify-active')
+
+  const originalTitle = categoriesList[categoryIndex].tasks[taskIndex];
+  document.querySelector(`.js-task-text-${categoryIndex}-${taskIndex}`).innerHTML = `<input  class="task-modify-input js-task-modify-input-${categoryIndex}-${taskIndex}">`
+
+  const input = document.querySelector(`.js-task-modify-input-${categoryIndex}-${taskIndex}`)
+  input.value = originalTitle;
+  input.focus();
+  
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      confirmTaskEdit(categoryIndex, taskIndex);
+    }
   });
 }
 
@@ -109,22 +133,19 @@ function addEventListenersToTaskModifyButtons() {
         confirmTaskEdit(categoryIndex, taskIndex);
         return;
       }
+      modifyTask(categoryIndex, taskIndex, modifyButton)
+    });
+  });
+}
 
-      modifyButton.innerHTML = `&#x2713;`
-      modifyButton.classList.add('modify-active')
+function addEventListenersToTaskDeleteButtons() {
+  document.querySelectorAll('.js-task-cross-button').forEach((deleteButton) => {
+    deleteButton.addEventListener('click', () => {
+      const categoryIndex = parseInt(deleteButton.dataset.categoryIndex, 10);
+      const taskIndex = parseInt(deleteButton.dataset.taskIndex, 10);
 
-      const originalTitle = categoriesList[categoryIndex].tasks[taskIndex];
-      document.querySelector(`.js-task-text-${categoryIndex}-${taskIndex}`).innerHTML = `<input  class="task-modify-input js-task-modify-input-${categoryIndex}-${taskIndex}">`
-
-      const input = document.querySelector(`.js-task-modify-input-${categoryIndex}-${taskIndex}`)
-      input.value = originalTitle;
-      input.focus();
-      
-      input.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          confirmTaskEdit(categoryIndex, taskIndex);
-        }
-      });
+      categoriesList[categoryIndex].tasks.splice(taskIndex, 1)
+      renderCategoriesList();
     });
   });
 }
