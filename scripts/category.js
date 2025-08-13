@@ -1,8 +1,11 @@
-const categoriesList = JSON.parse(localStorage.getItem('toDoList'));
+const categoriesList = JSON.parse(localStorage.getItem('toDoList')) || [];
 
 
 function renderCategoriesList(){
   saveToLocalStorage()
+  if(categoriesList.length === 0){
+    return
+  }
   let categoriesListHTML = '';
 
   categoriesList.forEach((categorieObj, index) => {
