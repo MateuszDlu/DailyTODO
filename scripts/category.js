@@ -1,7 +1,8 @@
-const categoriesList = [{categoryName: 'category1', tasks: ['task1', 'task2', 'task3']}, {categoryName: 'category2', tasks: ['task4', 'task5']}];
+const categoriesList = JSON.parse(localStorage.getItem('toDoList'));
 
 
 function renderCategoriesList(){
+  saveToLocalStorage()
   let categoriesListHTML = '';
 
   categoriesList.forEach((categorieObj, index) => {
@@ -201,4 +202,8 @@ function confirmCategoryEdit(index) {
 
   categoriesList.splice(index, 1, {categoryName, tasks: oldCategory.tasks});
   renderCategoriesList();
+}
+
+function saveToLocalStorage(){
+  localStorage.setItem('toDoList', JSON.stringify(categoriesList))
 }
